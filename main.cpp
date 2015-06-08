@@ -10,37 +10,37 @@ using namespace std;
 unsigned int anruferCount = 20;
 
 int main() {
-    cout << "Hello, World!" << endl;
     srand (time(NULL));
 
     // Callcenter gruenden (Zahl mitarbeiter festlegen)
-    Callcenter *telewerkGmbH = new Callcenter(10);
+    Callcenter *telewerkGmbH = new Callcenter(3);
 
 
-    cout << telewerkGmbH->printInfo();
+   // cout << telewerkGmbH->printInfo();
 
 
     vector<std::thread> anruferThreadListe;
+    vector<Anrufer*> anruferListe;
     anruferThreadListe.reserve(anruferCount);
+    anruferListe.reserve(anruferCount);
 
     for (unsigned int i = 0; i < anruferCount; i++){
         Anrufer* anrufer = new Anrufer(telewerkGmbH);
         anruferThreadListe.push_back(std::thread(&Anrufer::call, anrufer));
+        anruferListe.push_back(anrufer);
     }
+
+    while(true){
+        for (auto& anrufer : anruferListe){
+            cout << anrufer->getMyNumber() << ": " << anrufer->getStatusText() << endl;
+        }
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+        system("clear");
+    }
+
     for (auto& t : anruferThreadListe){
         t.join();
     }
-
-
-    // anrufer erstellen.
-    // 10 Anrufer (Function Object)
-    // Aufruf func call als thread
-    // try durchkommen or sleep 0/1
-    //
-
-    // callcenter nimmt anrufer und steckt in Warteschleife
-
-    // Mitarbeiter holt sich nächsten Anrufer aus Warteschleife
 
     return 0;
 }

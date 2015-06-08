@@ -13,16 +13,14 @@ std::string Mitarbeiter::getName() const {
     return "Mitarbeiter " + std::to_string(myAgentId);
 }
 
-unsigned int Mitarbeiter::agentCountId = 1;
+std::atomic<unsigned int> Mitarbeiter::agentCountId (1);
 
 void Mitarbeiter::operator()() const {
-
     std::cout << getName()  << std::endl;
-
 }
 
 void Mitarbeiter::working() {
-    std::this_thread::sleep_for( std::chrono::seconds(1) );
+    std::this_thread::sleep_for(std::chrono::seconds(1));
         try {
             while (true) {
                 Anrufer* anrufer = myCallcenter->getNextCall();

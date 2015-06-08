@@ -9,6 +9,7 @@
 #include <string>
 #include <mutex>
 #include <thread>
+#include <atomic>
 #include "Anrufer.h"
 
 
@@ -16,12 +17,13 @@
 class Mitarbeiter {
 
 private:
-    static unsigned int agentCountId;
+    static std::atomic<unsigned int> agentCountId;
     bool isEmployed = true;
     unsigned int myAgentId;
     Callcenter* myCallcenter;
     static std::mutex CallerMutex;
     std::thread workingThread;
+
 
 public:
     void operator()() const;
@@ -35,7 +37,8 @@ public:
     bool isBusy();
 
     Mitarbeiter(Callcenter* callcenter) : workingThread(&Mitarbeiter::working, this)  {
-        myAgentId = agentCountId++;
+        agentCountId++;
+        myAgentId = agentCountId.load(std::memory_order_relaxed);
         myCallcenter = callcenter;
 
     }

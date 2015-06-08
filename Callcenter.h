@@ -28,7 +28,7 @@ private:
     std::condition_variable cond;
 
     bool beendet;
-    unsigned int queuesize = 5;
+    unsigned int queuesize = 10;
     std::vector<Mitarbeiter*> mitarbeiter;
     std::deque<Anrufer*> queue;
 
