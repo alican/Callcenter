@@ -27,7 +27,6 @@ void Mitarbeiter::working() {
                // std::lock_guard<std::mutex> lock(ausgabeMutex);
                 std::cout << "Mitarbeiter " << getName()  << " telefoniert mit "  << anrufer->getMyNumber() << std::endl;
                 anrufer->startTalk();
-
             }
         } catch (...) {
             std::lock_guard<std::mutex> lock(ausgabeMutex);
